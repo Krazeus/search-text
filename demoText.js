@@ -1,16 +1,16 @@
 $(document).ready(function () {
-  var subStringMatcher = function (strs) {
-    return function findMatches(q, cb) {
-      var matches = [],
-        subStringRegex = new RegExp(q, 'i');
-      $.each(strs, function (i, str) {
-        if (subStringRegex.test(str)) {
-          matches.push(str);
-        }
-      });
-      cb(matches);
-    };
-  };
+
+
+  function syncFn(datums) {
+    console.log('datums from `local`, `prefetch`, and `#add`');
+    console.log(datums);
+  }
+
+  function asyncFn(datums) {
+    console.log('datums from `remote`');
+    console.log(datums);
+  }
+
 
 
   $.ajax({
@@ -22,35 +22,45 @@ $(document).ready(function () {
     contentType: "application/json",
     timeout: 360000,
     success: function (response) {
-      //<debug>
-      console.log('response request', new Date());
-      console.log('response', response);
-      //</debug>
 
-      var individualJson = response.individualList;
-      $.each(individualJson, function (indexInArray, valueOfElement) {
-        //<debug>
-          console.log('debug', arguments);
-        //</debug>
+      /**
+       * https://github.com/twitter/typeahead.js/blob/master/doc/bloodhound.md
+       */
 
+
+      /**
+       * local storage
+       * http://stackoverflow.com/questions/2989284/what-is-the-max-size-of-localstorage-values/2989317#2989317
+       */
+      var individualData = response.individualList;
+
+      $.each(individualData, function (indexInArray, valueOfElement) {
         var tokenList = valueOfElement.name;
-        valueOfElement.tokens =[];
+        valueOfElement.tokens = valueOfElement.text.split(" ");
+        //<debug>
+        console.log('debug', valueOfElement);
+        //</debug>
       });
-      var individualList = new Bloodhound({
+
+
+      var engineList = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
-        prefetch: response.individualList
+        identify: function (obj) { return obj.uuid; },
+        local: individualData
+      });
+
+      // engineList.add(individualData);
+
+      var search = engineList.get("71D19F57-27E7-426C-9AD4-21A4903D438C");
+      var query = engineList.search("key", syncFn, asyncFn);
+      $('#remote .typeahead').typeahead(null, {
+        name: 'best-pictures',
+        display: 'value',
+        source: engineList
       });
 
 
-      $(".the-basic .typehead").typehead({
-        hint: true,
-        highlight: true,
-        minLength: 1
-      }, {
-          name: 'idividuals',
-          source: individualList
-        });
     }
   });
 });
