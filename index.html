@@ -1,11 +1,42 @@
 <html>
 <header>
   <script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
+  <script type="text/javascript" src="node_modules/handlebars/dist/handlebars.min.js"></script>
   <script type="text/javascript" src="typeahead/bloodhound.min.js"></script>
   <script type="text/javascript" src="typeahead/typeahead.bundle.min.js"></script>
   <script type="text/javascript" src="typeahead/typeahead.jquery.min.js"></script>
   <script type="text/javascript" src="demoText.js"></script>
+
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <!--<link rel="stylesheet" href="css/style.css">-->
+
 </header>
+<style>
+  .blackboard {
+    height: 500px;
+    width: 500px;
+    background-color: lightblue;
+  }
+</style>
+<script>
+  $(document).ready(function () {
+
+    $(document).on("keyup", ".blackboard", function () {
+      //<debug>
+      console.log('debug', arguments);
+      //</debug>
+    });
+    // $(".blackboard").on("keydown", function (e) {
+    //   //<debug>
+    //   console.log('keydown', arguments);
+    //   //</debug>
+    // }).keydown(function (param) {
+    //   //<debug>
+    //   console.log('keydown', arguments);
+    //   //</debug>
+    // });
+  });
+</script>
 
 <body>
 
@@ -14,8 +45,16 @@
     <input class="typeahead" type="text" placeholder="text">
   </div>
 
-  <div class="resultList">
+  <div class="blackboard" contenteditable="true">
+  </div>
+  <div class="custom-templates">
+    <div class="typeahead"></div>
+  </div>
 
+  <div>
+    <button onclick="demo.loadFiles()"> cargar grupo de archivos </button>
+    <button onclick="demo.loadBigFile()"> cargar archivo de 209 megas</button>
+    <button onclick="demo.loadRestData()"> cargar desde rest</button>
   </div>
 
 </body>
