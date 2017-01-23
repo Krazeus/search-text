@@ -106,6 +106,24 @@ $(document).ready(function () {
 			});
 		},
 		/**
+		 * 	renderData description
+		 * @private
+		 */
+		renderData: function (data) {
+			var resultElement = $("results");
+			var length = (data.length > 100) ? 100 : data.length;
+			resultElement.remove();
+
+			for (var index = 0; index < length; index++) {
+				var element = data[index];
+				var newLi = document.createElement("LI");
+				newLi.innerHTML = element.v;
+				resultElement.add(newLi);
+			}
+			var newLi = document.createElement("LI");
+			newLi.innerHTML = data.length;
+		},
+		/**
 		 * getJsonData description
 		 * @private
 		 */
@@ -176,6 +194,42 @@ $(document).ready(function () {
 				//<debug>
 				console.log('debug', arguments);
 				//</debug>
+				var engineList = demo.initializeEditor(response);
+				$("#textdemo").on("change", function (param) {
+					//<debug>
+					console.log('change', arguments);
+					//</debug>
+
+				});
+				$("#textdemo").change(function (param) {
+					//<debug>
+					console.log('change', arguments);
+					//</debug>
+				});
+
+				$(document).on("keyup", ".blackboard", function () {
+					//<debug>
+					console.log('debug', this.innerHTML);
+					engineList.search(this.innerHTML, function (param) {
+						//<debug>
+						console.log('debug', arguments);
+						//</debug>
+						demo.renderData(param);
+					}, function (param) {
+						//<debug>
+						console.log('debug', arguments);
+						//</debug>
+					});
+
+					//</debug>
+				});
+
+				$("#textdemo").bind("propertychange change keyup paste input", function () {
+					// do stuff;
+					//<debug>
+					console.log('bind', arguments);
+					//</debug>
+				});
 			});
 		},
 		/**
@@ -187,11 +241,17 @@ $(document).ready(function () {
 			console.log('debug', arguments);
 			//</debug>
 			var engineList = new Bloodhound({
-				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+				// datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+				datumTokenizer: Bloodhound.tokenizers.obj.whitespace('v'),
 				queryTokenizer: Bloodhound.tokenizers.whitespace,
-				identify: function (obj) { return obj.uuid; },
+				// identify: function (obj) { return obj.uuid; },
+				identify: function (obj) { return obj.i; },
 				local: rawData
 			});
+
+			engineList.initialize();
+			demo.engineList = engineList;
+
 
 			// engineList.add(individualData);
 
@@ -217,6 +277,7 @@ $(document).ready(function () {
 			// 		suggestion: Handlebars.compile('<div><strong>{{value}}</strong> – {{year}}</div>')
 			// 	}
 			// });
+			return engineList;
 		},
 		/**
 		 * getRestData description
@@ -227,7 +288,8 @@ $(document).ready(function () {
 				//<debug>
 				console.log('debug', arguments);
 				//</debug>
-				var alldata = JSON.stringify(response.individualList);
+				// var alldata = JSON.stringify(response.individualList);
+				var alldata = JSON.stringify(response.r);
 				var data2 = new Blob([alldata], { type: 'text/json' });
 				var link = document.createElement("A");
 				link.setAttribute("download", 'jsonFile');
@@ -235,7 +297,7 @@ $(document).ready(function () {
 				// link.setAttribute("download", 'jsonFileALL.json');
 				link.setAttribute("download", 'jsonFile2.json');
 				link.click();
-			}, '{"uuidToken": "DB538FF5-8370-4C9F-A692-A15A5CB420D2" }', "POST");
+			}, '{"uuidToken": "B3A75069-67C3-42DA-BED1-36DFDE52CCAF" }', "POST");
 		},
 		/**
 		 * initComponent description

@@ -21,11 +21,6 @@
 <script>
   $(document).ready(function () {
 
-    $(document).on("keyup", ".blackboard", function () {
-      //<debug>
-      console.log('debug', arguments);
-      //</debug>
-    });
     // $(".blackboard").on("keydown", function (e) {
     //   //<debug>
     //   console.log('keydown', arguments);
@@ -42,20 +37,21 @@
 
 
   <div id="remote">
-    <input class="typeahead" type="text" placeholder="text">
+    <input id="textdemo" class="typeahead" type="text" placeholder="text">
   </div>
 
   <div class="blackboard" contenteditable="true">
   </div>
+  <ol class="results"> </ol>
   <div class="custom-templates">
     <div class="typeahead"></div>
   </div>
 
   <div>
     <button onclick="demo.loadFiles()"> cargar grupo de archivos </button>
-    <button onclick="demo.loadBigFile()"> cargar archivo de 209 megas</button>
-    <button onclick="demo.loadRestData()"> cargar desde rest</button>
-  </div>
+<button onclick="demo.loadBigFile()"> cargar archivo de 209 megas</button>
+<button onclick="demo.loadRestData()"> cargar desde rest</button>
+</div>
 
 </body>
 
