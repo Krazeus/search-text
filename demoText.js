@@ -210,8 +210,6 @@ $(document).ready(function () {
 				});
 
 				$(document).on("keyup", ".blackboard", function () {
-
-
 					var search = this.textContent.trim();
 					//<debug>
 					console.log('cadena a buscar', search);
