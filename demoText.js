@@ -110,18 +110,20 @@ $(document).ready(function () {
 		 * @private
 		 */
 		renderData: function (data) {
-			var resultElement = $("results");
+			//<debug>
+			console.log('renderData', arguments);
+			//</debug>
 			var length = (data.length > 100) ? 100 : data.length;
-			resultElement.remove();
-
+			var htmlString = '';
 			for (var index = 0; index < length; index++) {
 				var element = data[index];
-				var newLi = document.createElement("LI");
-				newLi.innerHTML = element.v;
-				resultElement.add(newLi);
+				htmlString += "<li> " + element.v + " </li>";
 			}
-			var newLi = document.createElement("LI");
-			newLi.innerHTML = data.length;
+
+
+			$(".results li").remove();
+			$(".results").append(htmlString);
+			$(".total").text("resultados encontrados: " + data.length);
 		},
 		/**
 		 * getJsonData description
@@ -208,20 +210,22 @@ $(document).ready(function () {
 				});
 
 				$(document).on("keyup", ".blackboard", function () {
+
+
+					var search = this.textContent.trim();
 					//<debug>
-					console.log('debug', this.innerHTML);
-					engineList.search(this.innerHTML, function (param) {
+					console.log('cadena a buscar', search);
+					//</debug>
+					engineList.search(search, function (param) {
 						//<debug>
-						console.log('debug', arguments);
+						console.log('sincrono', arguments);
 						//</debug>
 						demo.renderData(param);
 					}, function (param) {
 						//<debug>
-						console.log('debug', arguments);
+						console.log('asincrono', arguments);
 						//</debug>
 					});
-
-					//</debug>
 				});
 
 				$("#textdemo").bind("propertychange change keyup paste input", function () {

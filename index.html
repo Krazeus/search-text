@@ -15,9 +15,19 @@
   .blackboard {
     height: 500px;
     width: 500px;
+    float: left;
     background-color: lightblue;
   }
+  .result {
+    height: 500px;
+    width: 500px;
+    float: right;
+    background-color: lightgreen;
+    overflow: scroll;
+  }
+
 </style>
+
 <script>
   $(document).ready(function () {
 
@@ -42,7 +52,9 @@
 
   <div class="blackboard" contenteditable="true">
   </div>
-  <ol class="results"> </ol>
+  <div class="result">
+    <ol class="results"> </ol>
+  </div>
   <div class="custom-templates">
     <div class="typeahead"></div>
   </div>
@@ -51,6 +63,7 @@
     <button onclick="demo.loadFiles()"> cargar grupo de archivos </button>
 <button onclick="demo.loadBigFile()"> cargar archivo de 209 megas</button>
 <button onclick="demo.loadRestData()"> cargar desde rest</button>
+<div class="total"> </div>
 </div>
 
 </body>
